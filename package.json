@@ -1,0 +1,16 @@
+{
+  "name": "pru-test",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "i2c": "^0.2.1",
+    "mpu6050": "git://github.com/miniben-90/mpu6050.git#1c8d08444944367018d463c27217ca0159fa142d"
+  }
+}
