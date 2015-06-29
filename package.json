@@ -10,7 +10,8 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "i2c": "^0.2.1",
-    "mpu6050": "git://github.com/miniben-90/mpu6050.git#1c8d08444944367018d463c27217ca0159fa142d"
+    "i2c": "~0.1.8",
+    "mpu6050": "git://github.com/miniben-90/mpu6050.git#1c8d08444944367018d463c27217ca0159fa142d",
+    "node-pru-extended": "0.0.8"
   }
 }
