@@ -1,14 +1,10 @@
 var mpu6050 = require('mpu6050');
-var pru = require('node-pru-extended');
+var controller = require('lib/controller');
 
 // init MPU
 var mpu = new mpu6050();
 mpu.initialize();
-
-// init PRU
-pru.init();
-pru.loadDatafile('data.bin');
-pru.execute('text.bin', 908);
+controller.initialize();
 
 // output loop
 setInterval(function() {
@@ -17,7 +13,7 @@ setInterval(function() {
 	console.log(mpu.getMotion6());
 
 	// read PRU
-	console.log(pru.getSharedRAMInt(0));
+	console.log(controller.read());
 
 }, 500);
 
