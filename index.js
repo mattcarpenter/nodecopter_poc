@@ -1,5 +1,5 @@
 var mpu6050 = require('mpu6050');
-var controller = require('lib/controller');
+var controller = require('./lib/controller');
 
 // init MPU
 var mpu = new mpu6050();
