@@ -1,29 +1,25 @@
-var mpu6050 = require('mpu6050');
 var controller = require('./lib/controller');
 var motors = require('./lib/motors');
+var motion = require('./lib/motion');
 var constants = require('./lib/constants');
+var ratePID = require('./lib/pid/rate');
 
-// init MPU
-var mpu = new mpu6050();
-mpu.initialize();
+// initialize r/c controller
 controller.initialize();
 
-// init motors
+// initialize and arm the motors
 motors.initialize();
 motors.setArmedStatus(true);
-motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, 1);
+//motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, 1);
 
-// output loop
+// initialize accelerometer and gyro
+motion.initialize();
+
+// flight control loop
 setInterval(function() {
 
-	// read MPU
-	//console.log(mpu.getMotion6());
-
-	// read PRU
-	//console.log(controller.read());
-
+	console.log(motion.getRotation());
 	motors.update();
-
-}, 1);
+}, 100);
 
 //mpu.setSleepEnabled(1);
