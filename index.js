@@ -11,7 +11,7 @@ controller.initialize();
 // init motors
 motors.initialize();
 motors.setArmedStatus(true);
-motors.setMotor(constants.MOTOR_POSITION, 1);
+motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, 1);
 
 // output loop
 setInterval(function() {
