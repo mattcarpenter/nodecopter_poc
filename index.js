@@ -13,13 +13,16 @@ motors.setArmedStatus(true);
 //motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, 1);
 
 // initialize accelerometer and gyro
-motion.initialize();
+motion.initialize().then(function () {
+	console.log('motion init promise resolved');
+});
 
 // flight control loop
+/*
 setInterval(function() {
 
 	console.log(motion.getRotation());
 	motors.update();
 }, 100);
-
+*/
 //mpu.setSleepEnabled(1);
