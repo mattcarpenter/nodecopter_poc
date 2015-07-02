@@ -16,11 +16,9 @@ motors.setArmedStatus(true);
 motion.initialize();
 
 // flight control loop
-/*
 setInterval(function() {
 
-	console.log(motion.getRotation());
+	console.log(motion.getAcceleration());
 	motors.update();
 }, 100);
-*/
 //mpu.setSleepEnabled(1);
