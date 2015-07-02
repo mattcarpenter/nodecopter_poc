@@ -39,16 +39,25 @@ var offset = motion6();
 module.exports = {
 	initialize: initialize,
 	getAcceleration: getAcceleration,
-	getRotation: getRotation,
-	calibrate: calibrate
+	getRotation: getRotation
 };
 
 /**
  * Initializes the motion module
  */
 function initialize() {
+	var deferred = q.defer();
 	mpu = new mpu6050();
 	mpu.initialize();
+
+	calibrate().then(function () {
+		console.log('Calibration complete');
+		console.log('Offsets:');
+		console.log(offset);
+		deferred.resolve();
+	});
+
+	return deferred.promise;
 }
 
 function calibrate() {
@@ -85,11 +94,14 @@ function calibrate() {
 			} else {
 				offset.ax = offset.ax - mean.ax / ACCEL_DEADZONE;
 			}
+			console.log('az mean: ' + Math.abs(16384-mean.az));
+			console.log('deadzone: ' + ACCEL_DEADZONE);
+			console.log('az offset: ' + offset.az);
 			
 			if (Math.abs(mean.ay) <= ACCEL_DEADZONE) {
 				ready++;
 			} else {
-				offset.ay = offset.ay - mean.ay / ACCEL_DEADZONE * 0.2;
+				offset.ay = offset.ay - mean.ay / ACCEL_DEADZONE * 0.5;
 			}
 
 			if (Math.abs(16384 - mean.az) <= ACCEL_DEADZONE) {

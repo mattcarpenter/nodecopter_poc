@@ -13,9 +13,7 @@ motors.setArmedStatus(true);
 //motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, 1);
 
 // initialize accelerometer and gyro
-motion.initialize().then(function () {
-	console.log('motion init promise resolved');
-});
+motion.initialize();
 
 // flight control loop
 /*
