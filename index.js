@@ -26,9 +26,9 @@ ratePids.initialize();
 
 	setInterval(function() {
 		rc = controller.read();
-
+		
 		// stabilization requires some footroom to work properly
-		if (rc.throttle < config.controller.ranges.throttle.min + 100) {
+		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
 		} else {
 
@@ -36,11 +36,11 @@ ratePids.initialize();
 			correction = ratePids.update(rc);
 
 			// update the motors
-			console.log(correction);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.throttle - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.throttle - correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.throttle + correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.throttle + correction.roll + correction.pitch);
+			console.log(constants.MOTOR_POSITION.FRONT_LEFT);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
 		}
 
 		motors.update();
