@@ -1,4 +1,5 @@
 var controller = require('./lib/controller');
+var config = require('./lib/config');
 var motors = require('./lib/motors');
 var motion = require('./lib/motion');
 var constants = require('./lib/constants');
