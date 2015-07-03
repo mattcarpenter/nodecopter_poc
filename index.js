@@ -36,6 +36,7 @@ ratePids.initialize();
 			correction = ratePids.update(rc);
 
 			// update the motors
+			console.log(correction);
 			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.throttle - correction.roll - correction.pitch);
 			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.throttle - correction.roll + correction.pitch);
 			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.throttle + correction.roll - correction.pitch);
