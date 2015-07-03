@@ -29,13 +29,20 @@ ratePids.initialize();
 
 		// stabilization requires some footroom to work properly
 		if (rc.throttle < config.controller.ranges.throttle.min + 100) {
-			return motors.setArmedStatus(false);
+			motors.zeroMotors();
+		} else {
+
+			// update rate PIDs and obtain the correction offset
+			correction = ratePids.update(rc);
+
+			// update the motors
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.throttle - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.throttle - correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.throttle + correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.throttle + correction.roll + correction.pitch);
 		}
 
-		correction = ratePids.update(rc);
-
-		console.log(correction);
-
+		motors.update();
 	}, 100);
 })();
 //mpu.setSleepEnabled(1);
