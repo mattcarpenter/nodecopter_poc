@@ -3,7 +3,7 @@ var config = require('./lib/config');
 var motors = require('./lib/motors');
 var motion = require('./lib/motion');
 var constants = require('./lib/constants');
-var ratePid = require('./lib/pid/rate');
+var ratePids = require('./lib/pid/rate');
 
 // initialize r/c controller
 controller.initialize();
@@ -16,22 +16,25 @@ motors.setArmedStatus(true);
 // initialize accelerometer and gyro
 motion.initialize();
 
+// initialize the rate pids
+ratePids.initialize();
+
 // flight control loop
 (function () {
 	var rc;
+	var correction;
 
 	setInterval(function() {
 		rc = controller.read();
 
-		console.log(rc);
-
 		// stabilization requires some footroom to work properly
-		if (rc.throttle < config.controller.throttleMin + 100) {
-			console.log('disarm');
+		if (rc.throttle < config.controller.ranges.throttle.min + 100) {
 			return motors.setArmedStatus(false);
 		}
 
+		correction = ratePids.update(rc);
 
+		console.log(correction);
 
 	}, 100);
 })();
