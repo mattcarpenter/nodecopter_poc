@@ -17,7 +17,6 @@ motion.initialize();
 
 // flight control loop
 setInterval(function() {
-
 	console.log(motion.getAcceleration());
 	motors.update();
 }, 100);
