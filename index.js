@@ -26,7 +26,7 @@ ratePids.initialize();
 
 	setInterval(function() {
 		rc = controller.read();
-	console.log(rc);	
+		
 		// stabilization requires some footroom to work properly
 		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
@@ -43,6 +43,6 @@ ratePids.initialize();
 		}
 
 		motors.update();
-	}, 100);
+	}, 1);
 })();
 //mpu.setSleepEnabled(1);
