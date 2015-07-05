@@ -27,6 +27,8 @@ ratePids.initialize();
 	setInterval(function() {
 		rc = controller.read();
 		
+		// pretend there is no input
+
 		// stabilization requires some footroom to work properly
 		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
@@ -34,7 +36,7 @@ ratePids.initialize();
 
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(rc);
-
+			
 			// update the motors
 			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
 			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
