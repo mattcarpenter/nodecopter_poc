@@ -13,10 +13,10 @@
     "enum": "^2.1.0",
     "gulp": "^3.9.0",
     "node-pid-controller": "^0.1.1",
-    "node-pru-extended": "0.0.8",
     "q": "^1.4.1",
     "mpu6050": "~0.1.2",
     "beaglebone-io": "~1.1.1",
-    "octalbonescript": "~1.0.3"
+    "octalbonescript": "~1.0.3",
+    "node-pru-extended": "0.0.11"
   }
 }

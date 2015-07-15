@@ -4,6 +4,10 @@ var motors = require('./lib/motors');
 var motion = require('./lib/motion');
 var constants = require('./lib/constants');
 var ratePids = require('./lib/pid/rate');
+var pru = require('node-pru-extended');
+
+// initialize the PRUSS
+pru.init();
 
 // initialize r/c controller
 controller.initialize();
@@ -36,7 +40,9 @@ ratePids.initialize();
 
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(rc);
-			
+			correction.roll = 0;
+			correction.pitch = 0;
+			correction.yaw = 0;		
 			// update the motors
 			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
 			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
