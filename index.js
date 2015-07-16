@@ -40,14 +40,14 @@ ratePids.initialize();
 
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(rc);
-			correction.roll = 0;
-			correction.pitch = 0;
-			correction.yaw = 0;		
+			//correction.roll = 0;
+			//correction.pitch = 0;
+			//correction.yaw = 0;		
 			// update the motors
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE + correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE + correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE - correction.roll + correction.pitch);
 		}
 
 		motors.update();
