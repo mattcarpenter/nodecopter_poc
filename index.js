@@ -4,6 +4,7 @@ var motors = require('./lib/motors');
 var motion = require('./lib/motion');
 var constants = require('./lib/constants');
 var ratePids = require('./lib/pid/rate');
+var stabPids = require('./lib/pid/stab');
 var pru = require('node-pru-extended');
 
 // initialize the PRUSS
@@ -20,13 +21,16 @@ motors.setArmedStatus(true);
 // initialize accelerometer and gyro
 motion.initialize();
 
-// initialize the rate pids
+// initialize the pids
 ratePids.initialize();
+stabPids.initialize();
 
 // flight control loop
 (function () {
 	var rc;
+	var stabCorrection;
 	var correction;
+	var ratePidTarget = {};
 
 	setInterval(function() {
 		rc = controller.read();
@@ -37,20 +41,26 @@ ratePids.initialize();
 		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
 		} else {
-
+			// update stab PIDs
+			stabCorrection = stabPids.update(rc);
+			
+			// basically convert the keys to lowercase because I
+			// suck at naming things with consistency.
+			ratePidTarget.ROLL = stabCorrection.roll;
+			ratePidTarget.PITCH = stabCorrection.pitch;
+			ratePidTarget.YAW = stabCorrection.yaw; 
+	
 			// update rate PIDs and obtain the correction offset
-			correction = ratePids.update(rc);
-			//correction.roll = 0;
-			//correction.pitch = 0;
-			//correction.yaw = 0;		
+			correction = ratePids.update(ratePidTarget);
+			
 			// update the motors
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE + correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE + correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE - correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
 		}
 
 		motors.update();
-	}, 1);
+	}, 5);
 })();
 //mpu.setSleepEnabled(1);
