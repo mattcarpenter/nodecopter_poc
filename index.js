@@ -6,6 +6,9 @@ var constants = require('./lib/constants');
 var ratePids = require('./lib/pid/rate');
 var stabPids = require('./lib/pid/stab');
 var pru = require('node-pru-extended');
+var SegfaultHandler = require('segfault-handler');
+
+SegfaultHandler.registerHandler();
 
 // initialize the PRUSS
 pru.init();
@@ -49,10 +52,10 @@ stabPids.initialize();
 			
 			// basically convert the keys to lowercase because I
 			// suck at naming things with consistency.
-			ratePidTarget.ROLL = 0;//stabCorrection.roll;
+			ratePidTarget.ROLL = stabCorrection.roll;
 			ratePidTarget.PITCH = stabCorrection.pitch;
-			ratePidTarget.YAW = 0;//stabCorrection.yaw; 
-console.log('pitch: ' + stabCorrection.pitch);	
+			ratePidTarget.YAW = stabCorrection.yaw; 
+//console.log('pitch: ' + stabCorrection.pitch);	
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(ratePidTarget);
 			//console.log(correction.roll);
