@@ -49,9 +49,9 @@ stabPids.initialize();
 			
 			// basically convert the keys to lowercase because I
 			// suck at naming things with consistency.
-			ratePidTarget.ROLL = 0;//stabCorrection.roll;
-			ratePidTarget.PITCH = 0;//stabCorrection.pitch;
-			ratePidTarget.YAW = 0;//stabCorrection.yaw; 
+			ratePidTarget.ROLL = stabCorrection.roll;
+			ratePidTarget.PITCH = stabCorrection.pitch;
+			ratePidTarget.YAW = stabCorrection.yaw; 
 	
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(ratePidTarget);
