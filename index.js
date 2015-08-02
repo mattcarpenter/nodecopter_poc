@@ -36,6 +36,9 @@ stabPids.initialize();
 		rc = controller.read();
 		
 		// pretend there is no input
+		//rc.YAW = 0;
+		//rc.ROLL = 0;
+		//rc.PITCH = 0;
 
 		// stabilization requires some footroom to work properly
 		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
@@ -46,18 +49,19 @@ stabPids.initialize();
 			
 			// basically convert the keys to lowercase because I
 			// suck at naming things with consistency.
-			ratePidTarget.ROLL = stabCorrection.roll;
-			ratePidTarget.PITCH = stabCorrection.pitch;
-			ratePidTarget.YAW = stabCorrection.yaw; 
+			ratePidTarget.ROLL = 0;//stabCorrection.roll;
+			ratePidTarget.PITCH = 0;//stabCorrection.pitch;
+			ratePidTarget.YAW = 0;//stabCorrection.yaw; 
 	
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(ratePidTarget);
+			//console.log(correction.roll);
 			
 			// update the motors
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
 		}
 
 		motors.update();
