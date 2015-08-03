@@ -7,11 +7,15 @@ var ratePids = require('./lib/pid/rate');
 var stabPids = require('./lib/pid/stab');
 var pru = require('node-pru-extended');
 var SegfaultHandler = require('segfault-handler');
+var server = require('./lib/server');
 
 SegfaultHandler.registerHandler();
 
 // initialize the PRUSS
 pru.init();
+
+// initialize webserver
+server.init();
 
 // initialize r/c controller
 controller.initialize();
@@ -68,6 +72,6 @@ stabPids.initialize();
 		}
 
 		motors.update();
-	}, 5);
+	}, 50); // should be 5ms
 })();
 //mpu.setSleepEnabled(1);
