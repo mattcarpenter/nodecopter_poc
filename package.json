@@ -20,6 +20,7 @@
     "node-pru-extended": "0.0.11",
     "segfault-handler": "~0.2.4",
     "express": "~4.13.2",
-    "ws": "~0.7.2"
+    "ws": "~0.7.2",
+    "filters": "~1.0.6"
   }
 }
