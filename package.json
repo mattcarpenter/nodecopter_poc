@@ -10,17 +10,17 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "enum": "^2.1.0",
-    "gulp": "^3.9.0",
-    "node-pid-controller": "^0.1.1",
-    "q": "^1.4.1",
-    "mpu6050": "git://github.com/mattcarpenter/mpu6050.git",
     "beaglebone-io": "~1.1.1",
-    "octalbonescript": "~1.0.3",
-    "node-pru-extended": "0.0.11",
-    "segfault-handler": "~0.2.4",
+    "enum": "^2.1.0",
     "express": "~4.13.2",
-    "ws": "~0.7.2",
-    "filters": "~1.0.6"
+    "filters": "~1.0.6",
+    "gulp": "^3.9.0",
+    "mpu6050-dmp": "0.0.0",
+    "node-pid-controller": "^0.1.1",
+    "node-pru-extended": "0.0.11",
+    "octalbonescript": "~1.0.3",
+    "q": "^1.4.1",
+    "segfault-handler": "~0.2.4",
+    "ws": "~0.7.2"
   }
 }
