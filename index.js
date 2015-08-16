@@ -48,7 +48,7 @@ stabPids.initialize();
 		//rc.PITCH = 0;
 
 		// stabilization requires some footroom to work properly
-		if (rc.THROTTLE < config.controller.ranges.throttle.min + 175) {
+		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
 		} else {
 			// update stab PIDs
@@ -64,11 +64,11 @@ stabPids.initialize();
 			correction = ratePids.update(ratePidTarget);
 			//console.log(correction.roll);
 			// update the motors
-correction.pitch = 0;
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE - correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE + correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE + correction.roll - correction.pitch);
+//correction.roll = 0;
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE + correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE + correction.roll + correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE - correction.roll - correction.pitch);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE - correction.roll + correction.pitch);
 		}
 
 		motors.update();
