@@ -38,10 +38,12 @@ stabPids.initialize();
 	var stabCorrection;
 	var correction;
 	var ratePidTarget = {};
+	var attitude;
 
 	setInterval(function() {
 		rc = controller.read();
-		
+		attitude = motion.getAttitude();
+
 		// pretend there is no input
 		//rc.YAW = 0;
 		//rc.ROLL = 0;
@@ -50,25 +52,28 @@ stabPids.initialize();
 		// stabilization requires some footroom to work properly
 		if (rc.THROTTLE < config.controller.ranges.throttle.min + 100) {
 			motors.zeroMotors();
+			// remember yaw
+			stabPids.setYawTarget(attitude.yaw);
 		} else {
 			// update stab PIDs
 			stabCorrection = stabPids.update(rc);
-			
+			//console.log('yaw: ' + attitude.yaw + ' corr: ' + stabCorrection.yaw);	
 			// basically convert the keys to lowercase because I
 			// suck at naming things with consistency.
 			ratePidTarget.ROLL = stabCorrection.roll;
 			ratePidTarget.PITCH = stabCorrection.pitch;
 			ratePidTarget.YAW = stabCorrection.yaw; 
-//console.log('pitch: ' + stabCorrection.pitch);	
+			
 			// update rate PIDs and obtain the correction offset
 			correction = ratePids.update(ratePidTarget);
-			//console.log(correction.roll);
+			//console.log(correction.yaw);
 			// update the motors
 //correction.roll = 0;
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE + correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE + correction.roll + correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE - correction.roll - correction.pitch);
-			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE - correction.roll + correction.pitch);
+correction.yaw = 0;
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_LEFT, rc.THROTTLE + correction.roll - correction.pitch - correction.yaw);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_LEFT, rc.THROTTLE + correction.roll + correction.pitch + correction.yaw);
+			motors.setMotor(constants.MOTOR_POSITION.FRONT_RIGHT, rc.THROTTLE - correction.roll - correction.pitch + correction.yaw);
+			motors.setMotor(constants.MOTOR_POSITION.REAR_RIGHT, rc.THROTTLE - correction.roll + correction.pitch - correction.yaw);
 		}
 
 		motors.update();
